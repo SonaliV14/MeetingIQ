@@ -1,0 +1,20 @@
+# --- Stage 1 / 5 / validate / map (offline, always needed) ---
+polars>=1.0
+faker>=25.0
+pydantic>=2.0
+jsonschema>=4.0
+
+# --- Stage 2 (LLM expansion) ---
+anthropic>=0.40
+
+# --- Stage 3 (TTS) — pick per provider ---
+openai>=1.40        # for SYNTHGEN_TTS=openai and/or SYNTHGEN_WHISPER=api
+pydub>=0.25         # audio concat (needs ffmpeg on PATH)
+# pyttsx3>=2.90     # offline TTS fallback (no key)
+
+# --- Stage 4 (Whisper, local) ---
+faster-whisper>=1.0
+
+# --- Stage 6 (load) ---
+psycopg[binary]>=3.1
+minio>=7.2

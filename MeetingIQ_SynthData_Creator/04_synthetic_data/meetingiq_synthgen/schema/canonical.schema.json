@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Meeting IQ canonical records",
+  "definitions": {
+    "base": {
+      "type": "object",
+      "required": ["id", "tenant_id", "source"],
+      "properties": {
+        "id": {"type": "string"},
+        "tenant_id": {"type": "string"},
+        "external_id": {"type": ["string", "null"]},
+        "source": {"type": "string"},
+        "source_uri": {"type": ["string", "null"]},
+        "confidence": {"type": "number"},
+        "freshness": {"type": ["string", "null"]}
+      }
+    },
+    "Account": {
+      "allOf": [{"$ref": "#/definitions/base"}],
+      "required": ["id", "tenant_id", "source", "name", "vertical", "size", "colour", "state"],
+      "properties": {
+        "name": {"type": "string"}, "vertical": {"type": "string"},
+        "size": {"type": "integer"}, "colour": {"type": "string"}, "state": {"type": "string"}
+      }
+    },
+    "Contact": {
+      "allOf": [{"$ref": "#/definitions/base"}],
+      "required": ["id", "account_id", "name", "committee_role", "decision_power"],
+      "properties": {
+        "account_id": {"type": "string"}, "name": {"type": "string"},
+        "committee_role": {"enum": ["economic_buyer", "champion", "technical_evaluator", "blocker", "influencer"]},
+        "decision_power": {"enum": ["low", "medium", "high"]}
+      }
+    },
+    "Opportunity": {
+      "allOf": [{"$ref": "#/definitions/base"}],
+      "required": ["id", "account_id", "name", "stage", "acv"],
+      "properties": {
+        "account_id": {"type": "string"}, "stage": {"type": "string"},
+        "acv": {"type": "integer"}, "is_closed": {"type": "boolean"}, "is_won": {"type": "boolean"}
+      }
+    },
+    "Meeting": {
+      "allOf": [{"$ref": "#/definitions/base"}],
+      "required": ["id", "account_id", "meeting_type", "start"],
+      "properties": {
+        "account_id": {"type": "string"}, "meeting_type": {"type": "string"},
+        "channel": {"type": "string"}, "recorded": {"type": "boolean"}, "start": {"type": "string"}
+      }
+    },
+    "Transcript": {
+      "allOf": [{"$ref": "#/definitions/base"}],
+      "required": ["id", "meeting_id", "text", "origin"],
+      "properties": {
+        "meeting_id": {"type": "string"}, "text": {"type": "string"},
+        "origin": {"enum": ["text", "whisper"]}
+      }
+    },
+    "Email": {
+      "allOf": [{"$ref": "#/definitions/base"}],
+      "required": ["id", "thread_id", "subject", "from_addr", "to_addrs"],
+      "properties": {
+        "thread_id": {"type": "string"}, "subject": {"type": "string"},
+        "from_addr": {"type": "string"}, "to_addrs": {"type": "array"}
+      }
+    }
+  }
+}
