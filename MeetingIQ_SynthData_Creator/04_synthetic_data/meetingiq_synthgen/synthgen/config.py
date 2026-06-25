@@ -8,6 +8,13 @@ import os
 from datetime import date, timedelta
 from pathlib import Path
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass 
+
+
 # ---- reproducibility ----
 SEED = 20260608
 TENANT_ID = "rapid7-gtm"
@@ -27,7 +34,7 @@ UPCOMING_DAYS = 14          # next two weeks
 
 # ---- paths ----
 ROOT = Path(__file__).resolve().parent.parent
-OUT = Path(os.getenv("SYNTHGEN_OUT", ROOT / "out"))
+OUT = Path(os.getenv("SYNTHGEN_OUT", str(ROOT / "out")))
 SKELETON = OUT / "skeleton"          # parquet/jsonl skeleton (Stage 1)
 ARTIFACTS = OUT / "artifacts"        # transcripts, emails, slack, docs (Stage 2)
 AUDIO = OUT / "audio"                # tts wav/mp3 (Stage 3)
@@ -42,7 +49,7 @@ for _p in (OUT, SKELETON, ARTIFACTS, AUDIO, TRANSCRIBED, CANONICAL, SOURCEMAP):
 # ---- provider switches (read from env; see .env.example) ----
 LLM_MODEL = os.getenv("SYNTHGEN_LLM_MODEL", "claude-sonnet-4-6")
 LLM_HEAVY_MODEL = os.getenv("SYNTHGEN_LLM_HEAVY", "claude-opus-4-8")
-TTS_PROVIDER = os.getenv("SYNTHGEN_TTS", "openai")        # openai | azure | elevenlabs | pyttsx3(offline)
+TTS_PROVIDER = os.getenv("SYNTHGEN_TTS", "pyttsx3")        # openai | azure | elevenlabs | pyttsx3(offline)
 WHISPER_MODE = os.getenv("SYNTHGEN_WHISPER", "local")      # local(faster-whisper) | api(openai)
 
 # ---- volume targets (sanity bounds for the validator) ----

@@ -10,7 +10,8 @@ anthropic>=0.40
 # --- Stage 3 (TTS) — pick per provider ---
 openai>=1.40        # for SYNTHGEN_TTS=openai and/or SYNTHGEN_WHISPER=api
 pydub>=0.25         # audio concat (needs ffmpeg on PATH)
-# pyttsx3>=2.90     # offline TTS fallback (no key)
+python-dotenv>=1.0
+pyttsx3>=2.90     # offline TTS fallback (no key)
 
 # --- Stage 4 (Whisper, local) ---
 faster-whisper>=1.0
