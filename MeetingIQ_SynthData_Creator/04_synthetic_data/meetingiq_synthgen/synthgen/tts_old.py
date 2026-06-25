@@ -31,30 +31,18 @@ def _turns(transcript: str):
 
 # ---- provider backends ----
 def _voice_for(speaker: str, voices: list[str]) -> str:
-    return voices[hash(speaker) % len(voices)] 
+    return voices[hash(speaker) % len(voices)]
 
 
 def _openai_tts(turns, out_path):
     from openai import OpenAI
     from pydub import AudioSegment
-    
-    load_dotenv()  
-    
-    # Route the client to OpenRouter
-    client = OpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=os.getenv("OPENAI_API_KEY") 
-    )
-    
+    client = OpenAI()
     voices = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"]
     segs = []
     tmp = out_path.with_suffix(".part.mp3")
     for spk, text in turns:
-        r = client.audio.speech.create(
-            model="openai/gpt-4o-mini-tts-2025-12-15", 
-            voice=_voice_for(spk, voices), 
-            input=text
-        )
+        r = client.audio.speech.create(model="gpt-4o-mini-tts", voice=_voice_for(spk, voices), input=text)
         r.stream_to_file(str(tmp))
         segs.append(AudioSegment.from_file(tmp))
     if segs:
